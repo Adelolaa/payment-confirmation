@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
-import { useEffect, useState } from 'react';const stringUrl = window.location
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function App() {
   const [isLoading,setIsloading] = useState(true)
@@ -9,17 +10,14 @@ function App() {
     const urlParams = window.location.search
     const  searchParams= new URLSearchParams(urlParams)
     const     status = searchParams.get("status")
-    const tx_ref    =  searchParams.get("tx_ref ")
+    const tx_ref    =  searchParams.get("tx_ref")
     const transaction_id = searchParams.get("transaction_id")
-    console.log(searchParams.get("id"))
+    console.log(searchParams.get("transaction_id"))
    async function createOrder (){
 try {
-  const resp=    await fetch(` https://ae60-105-113-69-49.ngrok-free.app/api/v1/webhook?status=${status}&tx_ref =${tx_ref }&transaction_id=${transaction_id}`,{
-    method:"GET"
-   })
-   const jsonResp = await resp.json()
-   if(jsonResp.status==200)  setIsSuccess(true)
-   console.log(await resp.json())
+  const resp=   await axios.post(`https://ae60-105-113-69-49.ngrok-free.app/api/v1/webhook`,{transaction_id,status,tx_ref}) 
+  setIsSuccess(true)
+   console.log(resp) 
      setIsloading(false)
 } catch (error) {
   console.log(error)
