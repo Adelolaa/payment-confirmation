@@ -7,17 +7,19 @@ function App() {
   const [isLoading,setIsloading] = useState(true)
   const [isSuccess,setIsSuccess] = useState(false)
   useEffect(()=>{
+   async function createOrder (){
     const urlParams = window.location.search
     const  searchParams= new URLSearchParams(urlParams)
     const     status = searchParams.get("status")
     const tx_ref    =  searchParams.get("tx_ref")
     const transaction_id = searchParams.get("transaction_id")
     console.log(searchParams.get("transaction_id"))
-   async function createOrder (){
+    console.log('..creating order')
 try {
-  const resp=   await axios.post(`https://ae60-105-113-69-49.ngrok-free.app/api/v1/webhook`,{transaction_id,status,tx_ref}) 
-  setIsSuccess(true)
-   console.log(resp) 
+  const resp=   await axios.get(`https://7cf7-102-88-71-6.ngrok-free.app/api/v1/webhook`,{params:{
+    transaction_id,status,tx_ref
+  }}) 
+  setIsSuccess(true) 
      setIsloading(false)
 } catch (error) {
   console.log(error)
@@ -25,6 +27,7 @@ try {
 }
    }
    createOrder()
+  
   },[])
 
 
@@ -41,11 +44,14 @@ try {
           }
 
           {
-             isSuccess? <h2>Your payment is successfull</h2>:<h2>
+             (isSuccess && !isLoading) &&<h2>Your payment is successfull</h2>
+          }
+{(!isSuccess&&!isLoading)&&             
+             <h2>
               Payment failed
              </h2>
-          }
 
+}
          
     </div>
   );
