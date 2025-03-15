@@ -16,7 +16,7 @@ function App() {
     console.log(searchParams.get("transaction_id"))
     console.log('..creating order')
 try {
-  const resp=   await axios.get(`https://7cf7-102-88-71-6.ngrok-free.app/api/v1/webhook`,{params:{
+  const resp=   await axios.get(`https://b3a0-105-113-63-160.ngrok-free.app/api/v1/webhook`,{params:{
     transaction_id,status,tx_ref
   }}) 
   setIsSuccess(true) 
